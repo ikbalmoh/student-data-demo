@@ -15,11 +15,11 @@ export default function StudentsTable({
   legalguardiansData,
 }: Props) {
   const schoolName = (schoolId: number) =>
-    schoolsData.find((school) => school.id === schoolId)?.name;
+    schoolsData.find((school) => school.id === schoolId)?.name ?? '-';
 
   const legalGuardianName = (legalGuardianId: number) =>
     legalguardiansData.find((guardian) => guardian.id === legalGuardianId)
-      ?.name;
+      ?.name ?? '-';
 
   return (
     <div className="col-span-12 md:col-span-8 xl:col-span-9 bg-white shadow-lg rounded-lg">
@@ -44,25 +44,35 @@ export default function StudentsTable({
             </tr>
           </thead>
           <tbody>
-            {studentsData.map((student) => (
-              <tr key={student.id}>
-                <td className="border-b border-slate-100 text-center p-2">
-                  {student.id}
-                </td>
-                <td className="border-b border-slate-100 p-2 text-left">
-                  {student.name}
-                </td>
-                <td className="border-b border-slate-100 p-2 text-left">
-                  {[student.address?.street, student.address?.city].join(', ')}
-                </td>
-                <td className="border-b border-slate-100 p-2 text-left">
-                  {schoolName(student.schoolId)}
-                </td>
-                <td className="border-b border-slate-100 p-2 text-left">
-                  {legalGuardianName(student.legalguardianId)}
+            {studentsData.length > 0 ? (
+              studentsData.map((student) => (
+                <tr key={student.id}>
+                  <td className="border-b border-slate-100 text-center p-2">
+                    {student.id}
+                  </td>
+                  <td className="border-b border-slate-100 p-2 text-left">
+                    {student.name}
+                  </td>
+                  <td className="border-b border-slate-100 p-2 text-left">
+                    {[student.address?.street, student.address?.city].join(
+                      ', '
+                    )}
+                  </td>
+                  <td className="border-b border-slate-100 p-2 text-left">
+                    {schoolName(student.schoolId)}
+                  </td>
+                  <td className="border-b border-slate-100 p-2 text-left">
+                    {legalGuardianName(student.legalguardianId)}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="p-10 text-slate-500 text-center">
+                  Please Select Students
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

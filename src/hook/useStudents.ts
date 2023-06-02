@@ -69,18 +69,22 @@ export default function useStudents(ids: number[]) {
   }, [students, ids]);
 
   const schoolsData = useMemo<School[]>(() => {
+    const schoolIds: number[] = studentsData.map((student) => student.schoolId);
     const filteredSchoolsData: School[] = schools
-      .filter((s) => ids.includes(s.id))
+      .filter((s) => schoolIds.includes(s.id))
       .sort((a, b) => a.id - b.id);
     return filteredSchoolsData;
-  }, [schools, ids]);
+  }, [studentsData, schools]);
 
   const legalguardiansData = useMemo<LegalGuardian[]>(() => {
+    const legalGuardianIds: number[] = studentsData.map(
+      (student) => student.legalguardianId
+    );
     const filteredLegalGuardianData: LegalGuardian[] = legalGuardians
-      .filter((s) => ids.includes(s.id))
+      .filter((s) => legalGuardianIds.includes(s.id))
       .sort((a, b) => a.id - b.id);
     return filteredLegalGuardianData;
-  }, [legalGuardians, ids]);
+  }, [legalGuardians, studentsData]);
 
   return { studentsData, schoolsData, legalguardiansData, loading };
 }
