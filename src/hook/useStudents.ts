@@ -1,0 +1,86 @@
+import { useState, useEffect, useMemo } from 'react';
+import { Student } from '@/types/student';
+import { School } from '@/types/school';
+import { LegalGuardian } from '@/types/legalguardian';
+import fetchStudentData from '@/utils/fetchStudentData';
+import fetchSchoolData from '@/utils/fetchSchoolData';
+import fetchLegalGuardianData from '@/utils/fetchLegalGuardianData';
+
+export default function useStudents(ids: number[]) {
+  const [students, setStudents] = useState<Student[]>([]);
+  const [schools, setSchools] = useState<School[]>([]);
+  const [legalGuardians, setLegalGuardians] = useState<LegalGuardian[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchData = async (ids: number[]) => {
+      setLoading(true);
+      let _students = [...students];
+      let _schools = [...schools];
+      let _legalGuardians = [...legalGuardians];
+      for (const studentId of ids) {
+        let student: Student;
+        const studentIndex = _students.findIndex(
+          (student) => student.id === studentId
+        );
+
+        if (studentIndex < 0) {
+          student = await fetchStudentData(studentId);
+          _students.push(student);
+        } else {
+          student = _students[studentIndex];
+        }
+
+        const { schoolId, legalguardianId } = student;
+
+        const schoolIndex = _schools.findIndex(
+          (school) => school.id === schoolId
+        );
+        if (schoolIndex < 0) {
+          const school: School = await fetchSchoolData(schoolId);
+          _schools.push(school);
+        }
+
+        const guardianIndex = _legalGuardians.findIndex(
+          (guardian) => guardian.id === legalguardianId
+        );
+        if (guardianIndex < 0) {
+          const legalGuardian: LegalGuardian = await fetchLegalGuardianData(
+            legalguardianId
+          );
+          _legalGuardians.push(legalGuardian);
+        }
+      }
+      setStudents(_students);
+      setSchools(_schools);
+      setLegalGuardians(_legalGuardians);
+      setLoading(false);
+    };
+
+    fetchData(ids);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ids]);
+
+  const studentsData = useMemo<Student[]>(() => {
+    const filteredStudentsData: Student[] = students
+      .filter((s) => ids.includes(s.id))
+      .sort((a, b) => a.id - b.id);
+    return filteredStudentsData;
+  }, [students, ids]);
+
+  const schoolsData = useMemo<School[]>(() => {
+    const filteredSchoolsData: School[] = schools
+      .filter((s) => ids.includes(s.id))
+      .sort((a, b) => a.id - b.id);
+    return filteredSchoolsData;
+  }, [schools, ids]);
+
+  const legalguardiansData = useMemo<LegalGuardian[]>(() => {
+    const filteredLegalGuardianData: LegalGuardian[] = legalGuardians
+      .filter((s) => ids.includes(s.id))
+      .sort((a, b) => a.id - b.id);
+    return filteredLegalGuardianData;
+  }, [legalGuardians, ids]);
+
+  return { studentsData, schoolsData, legalguardiansData, loading };
+}
