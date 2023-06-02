@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "name": "Mason-Rice Elementary",
+    "address": "Newton Centre, Massachusetts"
+  },
+  {
+    "id": 2,
+    "name": "Little Harbor Elementary",
+    "address": "Portsmouth, New Hampshire"
+  },
+  {
+    "id": 3,
+    "name": "Bay Head Elementary",
+    "address": "Bay Head, New Jersey"
+  },
+  {
+    "id": 4,
+    "name": "Frost Elementary",
+    "address": "Frostburg, Maryland"
+  },
+  {
+    "id": 5,
+    "name": "Marion Cross School",
+    "address": "Norwich, Vermont"
+  }
+]

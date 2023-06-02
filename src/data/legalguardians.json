@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "John Smith",
+    "address": "123 Main Street",
+    "phone": "(555) 123-4567"
+  },
+  {
+    "id": 2,
+    "name": "Sarah Johnson",
+    "address": "456 Elm Avenue",
+    "phone": "(555) 987-6543"
+  },
+  {
+    "id": 3,
+    "name": "David Williams",
+    "address": "789 Oak Drive",
+    "phone": "(555) 456-7890"
+  },
+  {
+    "id": 4,
+    "name": "Emily Davis",
+    "address": "321 Pine Lane",
+    "phone": "(555) 789-0123"
+  },
+  {
+    "id": 5,
+    "name": "Michael Brown",
+    "address": "567 Maple Court",
+    "phone": "(555) 234-5678"
+  },
+  {
+    "id": 6,
+    "name": "Jessica Miller",
+    "address": "890 Walnut Street",
+    "phone": "(555) 567-8901"
+  },
+  {
+    "id": 7,
+    "name": "Robert Wilson",
+    "address": "234 Cedar Road",
+    "phone": "(555) 901-2345"
+  },
+  {
+    "id": 8,
+    "name": "Jennifer Thompson",
+    "address": "876 Birch Avenue",
+    "phone": "(555) 345-6789"
+  },
+  {
+    "id": 9,
+    "name": "Christopher Anderson",
+    "address": "543 Spruce Lane",
+    "phone": "(555) 678-9012"
+  },
+  {
+    "id": 10,
+    "name": "Melissa Garcia",
+    "address": "987 Ash Street",
+    "phone": "(555) 012-3456"
+  }
+]
