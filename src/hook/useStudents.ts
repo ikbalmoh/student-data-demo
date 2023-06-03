@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Student } from '@/types/student';
 import { School } from '@/types/school';
 import { LegalGuardian } from '@/types/legalguardian';
@@ -12,8 +12,8 @@ export default function useStudents(ids: number[]) {
   const [legalGuardians, setLegalGuardians] = useState<LegalGuardian[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchData = async (ids: number[]) => {
+  const fetchData = useCallback(
+    async (ids: number[]) => {
       setLoading(true);
       let _students = [...students];
       let _schools = [...schools];
@@ -55,8 +55,11 @@ export default function useStudents(ids: number[]) {
       setSchools(_schools);
       setLegalGuardians(_legalGuardians);
       setLoading(false);
-    };
+    },
+    [legalGuardians, schools, students]
+  );
 
+  useEffect(() => {
     fetchData(ids);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ids]);

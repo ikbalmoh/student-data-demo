@@ -3,12 +3,15 @@
 import StudentsPicker from '@/components/StudentsPicker';
 import StudentsTable from '@/components/StudentsTable';
 import useStudents from '@/hook/useStudents';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function Home() {
   const [studentsIds, setStudentsIds] = useState<number[]>([]);
 
-  const onStudentsPick = (ids: number[]) => setStudentsIds(ids);
+  const onStudentsPick = useCallback(
+    (ids: number[]) => setStudentsIds(ids),
+    []
+  );
 
   const { studentsData, schoolsData, legalguardiansData, loading } =
     useStudents(studentsIds);

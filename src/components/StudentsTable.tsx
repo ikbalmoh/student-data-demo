@@ -1,7 +1,8 @@
 import { LegalGuardian } from '@/types/legalguardian';
 import { School } from '@/types/school';
 import { Student } from '@/types/student';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import StudentRow from './StudentRow';
 
 type Props = {
   studentsData: Student[];
@@ -14,12 +15,16 @@ export default function StudentsTable({
   schoolsData,
   legalguardiansData,
 }: Props) {
-  const schoolName = (schoolId: number) =>
-    schoolsData.find((school) => school.id === schoolId)?.name ?? '-';
+  const getSchool = useCallback(
+    (schoolId: number) => schoolsData.find((school) => school.id === schoolId),
+    [schoolsData]
+  );
 
-  const legalGuardianName = (legalGuardianId: number) =>
-    legalguardiansData.find((guardian) => guardian.id === legalGuardianId)
-      ?.name ?? '-';
+  const getLegalGuardian = useCallback(
+    (legalGuardianId: number) =>
+      legalguardiansData.find((guardian) => guardian.id === legalGuardianId),
+    [legalguardiansData]
+  );
 
   return (
     <div className="col-span-12 md:col-span-8 xl:col-span-9 bg-white shadow-lg rounded-lg">
@@ -46,25 +51,12 @@ export default function StudentsTable({
           <tbody>
             {studentsData.length > 0 ? (
               studentsData.map((student) => (
-                <tr key={student.id}>
-                  <td className="border-b border-slate-100 text-center p-2">
-                    {student.id}
-                  </td>
-                  <td className="border-b border-slate-100 p-2 text-left">
-                    {student.name}
-                  </td>
-                  <td className="border-b border-slate-100 p-2 text-left">
-                    {[student.address?.street, student.address?.city].join(
-                      ', '
-                    )}
-                  </td>
-                  <td className="border-b border-slate-100 p-2 text-left">
-                    {schoolName(student.schoolId)}
-                  </td>
-                  <td className="border-b border-slate-100 p-2 text-left">
-                    {legalGuardianName(student.legalguardianId)}
-                  </td>
-                </tr>
+                <StudentRow
+                  key={student.id}
+                  student={student}
+                  school={getSchool(student.schoolId)}
+                  legalguardian={getLegalGuardian(student.legalguardianId)}
+                />
               ))
             ) : (
               <tr>
