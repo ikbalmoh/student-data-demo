@@ -1,8 +1,10 @@
 import { LegalGuardian } from '@/types/legalguardian';
 import { School } from '@/types/school';
 import { Student } from '@/types/student';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import StudentRow from './StudentRow';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 type Props = {
   studentsData: Student[];
@@ -15,6 +17,8 @@ export default function StudentsTable({
   schoolsData,
   legalguardiansData,
 }: Props) {
+  const [exporting, setExporting] = useState<boolean>(false);
+
   const getSchool = useCallback(
     (schoolId: number) => schoolsData.find((school) => school.id === schoolId),
     [schoolsData]
@@ -26,13 +30,34 @@ export default function StudentsTable({
     [legalguardiansData]
   );
 
+  const exportToPdf = async () => {
+    setExporting(true);
+    const pdf = new jsPDF('portrait', 'pt', 'a4');
+    const data = await html2canvas(document.querySelector('#student-table')!);
+    const img = data.toDataURL('image/png');
+    const imgProperties = pdf.getImageProperties(img);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    pdf.addImage(img, 'PNG', 0, 10, pdfWidth, pdfHeight);
+    pdf.save('student-data.pdf');
+    setExporting(false);
+  };
+
   return (
     <div className="col-span-12 md:col-span-8 xl:col-span-9 bg-white shadow-lg rounded-lg">
-      <div className="px-5 py-3 font-semibold text-slate-900">
-        Students Table
+      <div className="flex flex-row items-center justify-between px-5 py-3">
+        <div className="font-semibold text-slate-900">Students Table</div>
+        <button
+          disabled={exporting || studentsData.length === 0}
+          type="button"
+          onClick={exportToPdf}
+          className="px-5 py-2.5 rounded-lg bg-indigo-50 text-indigo-600 text-sm font-medium hover:bg-indigo-500 hover:text-white hover:shadow-lg disabled:bg-gray-200 disabled:text-gray-500 disabled:shadow-none"
+        >
+          {exporting ? 'Exporting...' : 'Export to PDF'}
+        </button>
       </div>
       <div className="border-t border-slate-200/60 p-3 overflow-auto">
-        <table className="table w-full text-slate-600">
+        <table className="table w-full text-slate-600" id="student-table">
           <thead>
             <tr>
               <th className="border-b border-slate-200 p-2">ID</th>
