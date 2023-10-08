@@ -27,7 +27,7 @@ export default function Home() {
       <div className="col-span-12 text-center pt-10">
         <a
           className="hover:text-indigo-500 text-slate-500"
-          href="https://github.com/iikmoh/student-data-demo"
+          href="https://github.com/ikbalmoh/student-data-demo"
         >
           View Source on <span className="font-bold">Github</span>
         </a>
